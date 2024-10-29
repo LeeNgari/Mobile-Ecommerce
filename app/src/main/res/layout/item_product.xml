@@ -8,7 +8,10 @@
     <RelativeLayout
         android:layout_width="375dp"
         android:layout_height="170dp"
-        android:background = "@color/material_dynamic_neutral95">
+        android:elevation="8dp"
+        android:background="@color/material_dynamic_neutral95"
+        >
+
 
 
         <ImageView
@@ -26,8 +29,10 @@
             android:layout_toRightOf="@id/img"
             android:layout_marginTop="5dp"
             android:text="mobile name"
-            android:textSize="20sp"
-            android:textColor="@color/black"/>
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:id="@+id/price"
@@ -36,8 +41,8 @@
             android:layout_below="@id/name"
             android:layout_marginTop="10dp"
             android:text="mobile name"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textSize="15sp"
+            android:textColor="#6200EE"/>
             />
         <TextView
             android:layout_width="wrap_content"
@@ -47,8 +52,17 @@
             android:layout_below="@id/price"
             android:layout_marginTop="10dp"
             android:text="mobile name"
-            android:textSize="17sp"
+            android:textSize="12sp"
             android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_toRightOf="@id/rating"
+            android:layout_below="@id/price"
+            android:src="@drawable/baseline_star_24"
+            android:layout_marginTop="10dp"
+            />
 
         <Button
             android:layout_width="130dp"
@@ -57,6 +71,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@id/rating"
             android:layout_toRightOf="@id/img"
+            android:elevation="8dp"
             android:background="#6200EE"
             android:text="Add to Cart" />
 
