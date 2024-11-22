@@ -142,7 +142,7 @@ public class Registration extends AppCompatActivity {
         user.put("firstName", firstName);
         user.put("lastName", lastName);
         user.put("email", email);
-        user.put("shoppingCart", new ArrayList<>()); // Initialize with an empty shopping cart array
+        user.put("orderHistory", new ArrayList<>()); // Initialize with an empty shopping cart array
         user.put("address", ""); // Initialize with an empty address
 
         // Add user details to the Firestore collection

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
     String firstName, lastName;
 
+
+
     // RecyclerView for displaying mobile details
     private RecyclerView recyclerView;
     private Context context;
@@ -76,13 +80,34 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+
+        ImageButton cartIcon = findViewById(R.id.cart_icon);
+        ImageButton settingsIcon = findViewById(R.id.settings_icon);
+
+        cartIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirect to CartActivity
+                Intent cartIntent = new Intent(MainActivity.this, cart.class);
+                startActivity(cartIntent);
+            }
+        });
+
+        settingsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirect to SettingsActivity
+                Intent settingsIntent = new Intent(MainActivity.this, account.class);
+                startActivity(settingsIntent);
+            }
+        });
+
         // Initialize components and fetch data
         init();
         requestJsonData();
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
-        button = findViewById(R.id.logout);
         textView = findViewById(R.id.user_details);
 
         // Get the currently authenticated user
@@ -116,16 +141,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        // Set up logout button listener
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut(); // Sign out the user
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+
     }
 
     // Initialize UI components

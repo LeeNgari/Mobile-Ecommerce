@@ -1,6 +1,8 @@
 package model;
 
-public class MobileDetails {
+import java.io.Serializable;
+
+public class MobileDetails implements Serializable{
 
     // Fields to store mobile details
     private String name;        // Name of the mobile
