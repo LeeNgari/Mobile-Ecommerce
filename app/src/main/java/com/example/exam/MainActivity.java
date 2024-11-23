@@ -3,10 +3,15 @@ package com.example.exam;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
     // UI components
     Button button;
     TextView textView;
+    TextInputEditText searchEditText;
+    Spinner categoriesSpinner;
 
     // User data
     FirebaseUser user;
     String firstName, lastName;
-
-
 
     // RecyclerView for displaying mobile details
     private RecyclerView recyclerView;
@@ -66,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
     private List<MobileDetails> mobileDetailsList = new ArrayList<>();
     private StringRequest stringRequest;
+    private MobileDetailsAdapter adapter;
+
+    // Search query and selected category
+    private String searchQuery = "";
+    private String selectedCategory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
 
         ImageButton cartIcon = findViewById(R.id.cart_icon);
         ImageButton settingsIcon = findViewById(R.id.settings_icon);
@@ -104,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize components and fetch data
         init();
-        requestJsonData();
+        requestJsonData(searchQuery, selectedCategory);
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
@@ -141,7 +150,37 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
+        // Set up search functionality
+        searchEditText = findViewById(R.id.search_edit_text);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchQuery = s.toString();
+                requestJsonData(searchQuery, selectedCategory);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Set up category selection
+        categoriesSpinner = findViewById(R.id.categories_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categoriesSpinner.setAdapter(adapter);
+        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCategory = parent.getItemAtPosition(position).toString();
+                requestJsonData(searchQuery, selectedCategory);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     // Initialize UI components
@@ -151,11 +190,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Request mobile data from API
-    public void requestJsonData() {
+    public void requestJsonData(String query, String category) {
         requestQueue = Volley.newRequestQueue(context); // Create a new request queue
 
+        String url = "https://dummyjson.com/products";
+        if (!query.isEmpty()) {
+            url += "/search?q=" + query;
+        } else if (!category.isEmpty()) {
+            url += "/category/" + category;
+        }
+
         // Set up the string request for the API call
-        stringRequest = new StringRequest(Request.Method.GET, "https://dummyjson.com/products",
+        stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -190,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Process the JSON data and update the RecyclerView
     private void fetchTheData(JSONArray jsonArray) {
+        mobileDetailsList.clear();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject mobile = jsonArray.getJSONObject(i);
@@ -198,7 +245,8 @@ public class MainActivity extends AppCompatActivity {
                         mobile.getString("description"),
                         mobile.getString("rating"),
                         mobile.getDouble("price"),
-                        mobile.getString("thumbnail")
+                        mobile.getString("thumbnail"),
+                        mobile.getString("category") // Add category here
                 ));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -207,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set up the adapter for the RecyclerView
-        MobileDetailsAdapter adapter = new MobileDetailsAdapter(mobileDetailsList, context);
+        adapter = new MobileDetailsAdapter(mobileDetailsList, context);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
     }

@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -17,8 +15,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.squareup.picasso.Picasso;
-
-
 
 import model.MobileDetails;
 
@@ -37,27 +33,20 @@ public class ProductDetails extends AppCompatActivity {
             return insets;
         });
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Enable the back button
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         MobileDetails product = (MobileDetails) getIntent().getSerializableExtra("mobileDetails");
 
         TextView detailTitleTextView = findViewById(R.id.detailTitleTextView);
         TextView detailDescriptionTextView = findViewById(R.id.detailDescriptionTextView);
         TextView detailPriceTextView = findViewById(R.id.detailPriceTextView);
+        TextView detailRatingTextView = findViewById(R.id.detailRatingTextView);
+        TextView detailCategoryTextView = findViewById(R.id.detailCategoryTextView);
         ImageView picImageView = findViewById(R.id.detailPicImageView);
-
-
-
 
         detailTitleTextView.setText(product.getName());
         detailDescriptionTextView.setText("Ksh " + product.getDescription());
         detailPriceTextView.setText("Ksh " + product.getPrice());
+        detailRatingTextView.setText("Rating: " + product.getRating());
+        detailCategoryTextView.setText("Category: " + product.getCategory());
         Picasso.get().load(product.getPic()).into(picImageView);
-
-
-
     }
 }

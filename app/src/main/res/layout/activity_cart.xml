@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".cart"
-    android:id="@+id/main"
-    >
+    android:id="@+id/main">
 
+    <!-- Cart Title -->
     <TextView
         android:id="@+id/cart_title"
         android:layout_width="wrap_content"
@@ -17,8 +17,10 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp" />
 
+    <!-- RecyclerView for Cart Items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_recycler_view"
         android:layout_width="0dp"
@@ -26,11 +28,13 @@
         app:layout_constraintTop_toBottomOf="@+id/cart_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/checkout_button" />
+        app:layout_constraintBottom_toTopOf="@+id/total_price"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Total Price -->
     <TextView
         android:id="@+id/total_price"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Total: $0.00"
         android:textSize="18sp"
@@ -40,13 +44,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Checkout Button -->
     <Button
         android:id="@+id/checkout_button"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Proceed to Checkout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

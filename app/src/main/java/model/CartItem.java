@@ -1,6 +1,10 @@
 package model;
 
-public class CartItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class CartItem implements Parcelable {
+
     private String title;
     private String description;
     private double price;
@@ -20,6 +24,40 @@ public class CartItem {
         this.price = price;
         this.quantity = quantity;
         this.imageUrl = imageUrl;  // Initialize the image URL
+    }
+
+    protected CartItem(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        price = in.readDouble();
+        quantity = in.readInt();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<CartItem> CREATOR = new Creator<CartItem>() {
+        @Override
+        public CartItem createFromParcel(Parcel in) {
+            return new CartItem(in);
+        }
+
+        @Override
+        public CartItem[] newArray(int size) {
+            return new CartItem[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeDouble(price);
+        dest.writeInt(quantity);
+        dest.writeString(imageUrl);
     }
 
     // Getters and Setters

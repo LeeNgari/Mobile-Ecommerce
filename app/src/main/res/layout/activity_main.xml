@@ -11,18 +11,19 @@
     <!-- Search Bar -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_bar"
-        android:layout_width="320dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="10dp"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cart_icon">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Search" />
@@ -31,10 +32,10 @@
     <!-- Cart Icon -->
     <ImageButton
         android:id="@+id/cart_icon"
-        android:layout_width="50dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="10dp"
         android:background="@null"
         android:contentDescription="Cart"
         android:src="@drawable/baseline_shopping_cart_24"
@@ -42,12 +43,13 @@
         android:scaleType="centerInside"
         app:tint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/settings_icon" />
+        app:layout_constraintEnd_toStartOf="@+id/settings_icon"
+        app:layout_constraintWidth_percent="0.1" />
 
     <!-- Settings Icon -->
     <ImageButton
         android:id="@+id/settings_icon"
-        android:layout_width="50dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
@@ -58,7 +60,8 @@
         android:scaleType="centerInside"
         app:tint="@color/white"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.1" />
 
     <!-- User Details Text -->
     <TextView
@@ -70,8 +73,22 @@
         android:text="Hi there"
         android:textSize="20sp"
         android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Categories Spinner -->
+    <Spinner
+        android:id="@+id/categories_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:entries="@array/categories"
+        app:layout_constraintTop_toBottomOf="@+id/user_details"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- RecyclerView for Displaying Items -->
     <androidx.recyclerview.widget.RecyclerView
@@ -79,7 +96,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/user_details"
+        app:layout_constraintTop_toBottomOf="@+id/categories_spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

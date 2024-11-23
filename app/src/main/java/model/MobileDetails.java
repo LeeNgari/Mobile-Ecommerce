@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class MobileDetails implements Serializable{
+public class MobileDetails implements Serializable {
 
     // Fields to store mobile details
     private String name;        // Name of the mobile
@@ -10,14 +10,16 @@ public class MobileDetails implements Serializable{
     private String rating;      // Rating of the mobile
     private double price;       // Price of the mobile
     private String pic;         // Picture URL of the mobile
+    private String category;    // Category of the mobile
 
     // Constructor to initialize MobileDetails object
-    public MobileDetails(String name, String description, String rating, double price, String pic) {
+    public MobileDetails(String name, String description, String rating, double price, String pic, String category) {
         this.name = name;
         this.description = description;
         this.rating = rating;
         this.price = price;
         this.pic = pic;
+        this.category = category;
     }
 
     // Getter method for name
@@ -68,5 +70,15 @@ public class MobileDetails implements Serializable{
     // Setter method for picture URL
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    // Getter method for category
+    public String getCategory() {
+        return category;
+    }
+
+    // Setter method for category
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

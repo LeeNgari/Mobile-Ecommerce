@@ -1,7 +1,8 @@
 package com.example.exam;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,14 +15,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FieldValue;
 
-import adapter.CartAdapter;
-import model.CartItem;
-import utilities.CartManager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import adapter.CartAdapter;
+import model.CartItem;
+import utilities.CartManager;
 
 public class cart extends AppCompatActivity implements CartAdapter.OnCartUpdatedListener {
 
@@ -65,10 +66,7 @@ public class cart extends AppCompatActivity implements CartAdapter.OnCartUpdated
     }
 
     private void updateTotalPrice() {
-        double totalPrice = 0;
-        for (CartItem item : CartManager.getInstance().getCartItems()) {
-            totalPrice += item.getTotalPrice();
-        }
+        double totalPrice = CartManager.getInstance().calculateTotalPrice();
         totalPriceTextView.setText("Ksh " + totalPrice);
     }
 
@@ -88,16 +86,26 @@ public class cart extends AppCompatActivity implements CartAdapter.OnCartUpdated
                 orderHistory.add(itemData);
             }
 
+            // Add log statement to check the size of cartItems before starting the intent
+            Log.d("CartActivity", "Cart Items before checkout: " + CartManager.getInstance().getCartItems().size());
             // Update Firestore: Add cart items to orderHistory in the user's document
             for (Map<String, Object> itemData : orderHistory) {
                 db.collection("users").document(userId)
                         .update("orderHistory", FieldValue.arrayUnion(itemData))
                         .addOnSuccessListener(aVoid -> {
+
+                            // Start the checkOut activity and pass the cart items
+                            Intent intent = new Intent(cart.this, checkOut.class);
+                            intent.putParcelableArrayListExtra("cartItems", new ArrayList<>(CartManager.getInstance().getCartItems()));
+                            startActivity(intent);
+
                             // Clear the cart after successful checkout
                             CartManager.getInstance().clearCart();
                             if (cartAdapter != null) {
                                 cartAdapter.notifyDataSetChanged();  // Refresh the cart view
                             }
+
+
 
                             Toast.makeText(cart.this, "Checkout successful!", Toast.LENGTH_SHORT).show();
                             finish();  // Close the activity after checkout
